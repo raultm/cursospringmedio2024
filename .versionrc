@@ -1,0 +1,40 @@
+{
+  "bumpFiles": [
+    {
+      "filename": "pom.xml"
+    }
+  ],
+  "packageFiles": [
+    {
+      "filename": "pom.xml"
+    }
+  ],
+  "header": "# Versiones\n\nTodos los cambios relevantes relativos al proyecto estarán aquí documentados.\n",
+  "commitUrlFormat": "https://gitlab.com/tu-usuario/tu-repositorio/commit/{{hash}}",
+  "compareUrlFormat": "../../compare/{{previousTag}}...{{currentTag}}",
+  "issueUrlFormat": "../../issues/{{id}}",
+  "types": [
+    {
+      "type": "feat",
+      "section": "Funcionalidades"
+    },
+    {
+      "type": "fix",
+      "section": "Errores Corregidos"
+    },
+    {
+      "type": "test",
+      "section": "Tests",
+      "hidden": true
+    },
+    {
+      "type": "build",
+      "section": "Sistema de Build",
+      "hidden": true
+    },
+    {
+      "type": "ci",
+      "hidden": true
+    }
+  ]
+}

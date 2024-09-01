@@ -1,0 +1,154 @@
+openapi: "3.0.0"
+info:
+  version: 0.1.0
+  title: cursospringmedio2024
+servers:
+  - url: http://localhost:8080
+    description: Servidor local de desarrollo
+tags:
+  - name: consejerias
+    description: Consejerías de la Junta de Extremadura
+paths:
+  /consejerias:
+    get:
+      summary: Listado de Consejerías en la aplicación
+      operationId: listarConsejerias
+      tags:
+        - consejerias
+      responses:
+        "200":
+          description: Listado completo de consejerías
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsejeriasListResponse"
+        "400":
+          $ref: '#/components/responses/400_BadRequest'
+        "401":
+          $ref: '#/components/responses/401_Unauthorized'
+        "403":
+          $ref: '#/components/responses/403_Forbidden'
+    post:
+      summary: Crear una nueva consejeria
+      operationId: crearConsejeria
+      tags:
+        - consejerias
+      requestBody:
+        description: Crear una nueva consejeria en la Aplicación
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConsejeriaCreate"
+      responses:
+        "201":
+          description: Consejería creada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsejeriaSummaryResponse"
+        "400":
+          $ref: '#/components/responses/400_BadRequest'
+        "401":
+          $ref: '#/components/responses/401_Unauthorized'
+        "403":
+          $ref: '#/components/responses/403_Forbidden'
+components:
+  securitySchemes:
+    JWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    Profile:
+      type: apiKey
+      in: header
+      name: Profile
+    User:
+      type: apiKey
+      in: header
+      name: Jwt-User
+  responses:
+    "400_BadRequest":
+      description: La información ofrecida es incorrecta
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorObject"
+    "401_Unauthorized":
+      description: El usuario no está autenticado
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NoAuthError"
+    "403_Forbidden":
+      description: El usuario no está autenticado
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NoAuthError"
+  schemas:
+    NoAuthError:
+      description: Cuando el usuario no está logueado(AUTHenticate) o no tiene permisos (AUTHorization)
+      type: object
+      properties:
+        code:
+          type: integer
+        error:
+          type: string
+    ErrorMessage:
+      type: object
+      properties:
+        code:
+          type: integer
+        error:
+          type: string
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+        error:
+          type: object
+          additionalProperties: true
+          example:
+            nombre: "No puede ser nulo"
+            descripcion: "Longitud debe estar entre 1 y 2048"
+    ConsejeriasListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConsejeriaSummary"
+    ConsejeriaSummary:
+      type: object
+      required:
+        - id
+        - dir3
+        - nombre
+      properties:
+        id:
+          type: integer
+          format: int64
+        dir3:
+          type: string
+        nombre:
+          type: string
+    ConsejeriaCreate:
+      type: object
+      required:
+        - nombre
+        - dir3
+      properties:
+        dir3:
+          type: string
+          minLength: 1
+        nombre:
+          type: string
+          minLength: 1
+          maxLength: 60
+    ConsejeriaSummaryResponse:
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/ConsejeriaSummary"
+    

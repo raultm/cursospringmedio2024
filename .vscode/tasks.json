@@ -1,0 +1,32 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "setup_environment",
+      "type": "shell",
+      "command": "./scripts/setup.bat",
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "spring_boot_run",
+      "type": "shell",
+      "command": ".\\mvnw clean spring-boot:run",
+      "problemMatcher": []
+    },
+    {
+      "label": "bump_version",
+      "type": "shell",
+      "command": "if (Get-Command commit-and-tag-version -ErrorAction SilentlyContinue) { commit-and-tag-version } else { Write-Host 'commit-and-tag-version no está instalado en el sistema.' }",
+      "problemMatcher": []
+    },
+    {
+      "label": "commit",
+      "type": "shell",
+      "command": "${command:extension.conventionalCommits}",
+      "problemMatcher": []
+    }
+  ]
+}

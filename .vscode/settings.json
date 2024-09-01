@@ -1,0 +1,21 @@
+{
+  "VsCodeTaskButtons.showCounter": false,
+  "VsCodeTaskButtons.tasks": [
+    {
+      "label": "$(testing-run-icon) Spring-Boot:Run",
+      "task": "spring_boot_run",
+      "tooltip": "Ejecutar mvn spring-boot:run."
+    },
+    {
+      "label": "$(versions) Nueva Versión",
+      "task": "bump_version",
+      "tooltip": "Tarea para aumentar de version y etiquetar en git correctamente."
+    },
+    {
+      "label": "$(git-commit) Nuevo Commit",
+      "task": "commit",
+      "tooltip": "Tarea para generar mensaje de commit."
+    }
+  ],
+  "java.compile.nullAnalysis.mode": "automatic"
+}
