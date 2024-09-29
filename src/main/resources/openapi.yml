@@ -1,57 +1,207 @@
 openapi: "3.0.0"
 info:
   version: 0.1.0
-  title: cursospringmedio2024
+  title: Biblioteca - cursospringmedio2024
 servers:
   - url: http://localhost:8080
     description: Servidor local de desarrollo
 tags:
-  - name: consejerias
-    description: Consejerías de la Junta de Extremadura
+  - name: prestamos
+    description: Gestión de Préstamos
+  - name: socios
+    description: Gestión de Socios
+  - name: libros
+    description: Gestión de Libros
 paths:
-  /consejerias:
+  /socios:
     get:
-      summary: Listado de Consejerías en la aplicación
-      operationId: listarConsejerias
+      summary: Listado de Socios en la aplicación
+      operationId: listarSocios
       tags:
-        - consejerias
+      - socios
       responses:
         "200":
-          description: Listado completo de consejerías
+          description: Listado completo de Socios
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ConsejeriasListResponse"
-        "400":
-          $ref: '#/components/responses/400_BadRequest'
+                type: array
+                items:
+                  $ref: "#/components/schemas/SocioSummary"
         "401":
-          $ref: '#/components/responses/401_Unauthorized'
+          description: El usuario no está autenticado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoAuthError"
         "403":
-          $ref: '#/components/responses/403_Forbidden'
+          description: El usuario no tiene permisos para acceder a este recurso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoAuthError"
     post:
-      summary: Crear una nueva consejeria
-      operationId: crearConsejeria
+      summary: Crear 
+      operationId: crear
       tags:
-        - consejerias
+      - socios
       requestBody:
-        description: Crear una nueva consejeria en la Aplicación
+        description: Crear una nueva  en la Aplicación
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ConsejeriaCreate"
+              $ref: "#/components/schemas/SocioCreate"
       responses:
         "201":
           description: Consejería creada correctamente
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ConsejeriaSummaryResponse"
+                $ref: "#/components/schemas/SocioDetail"
         "400":
-          $ref: '#/components/responses/400_BadRequest'
+          description: La información ofrecida es incorrecta
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorObject"
         "401":
-          $ref: '#/components/responses/401_Unauthorized'
+          description: El usuario no está autenticado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoAuthError"
         "403":
-          $ref: '#/components/responses/403_Forbidden'
+          description: El usuario no tiene permisos para acceder a este recurso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoAuthError"
+  /libros:
+    get:
+      summary: Listado de Libros en la aplicación
+      operationId: listarLibros
+      tags:
+      - libros
+      responses:
+        "200":
+          description: Listado completo de Libros
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LibroSummary"
+        "401":
+          description: El usuario no está autenticado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoAuthError"
+        "403":
+          description: El usuario no tiene permisos para acceder a este recurso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoAuthError"
+    post:
+      summary: Crear Libro
+      operationId: crearLibro
+      tags:
+      - libros
+      requestBody:
+        description: Crear una nueva Libro en la Aplicación
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LibroCreate"
+      responses:
+        "201":
+          description: Consejería creada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LibroDetail"
+        "400":
+          description: La información ofrecida es incorrecta
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorObject"
+        "401":
+          description: El usuario no está autenticado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoAuthError"
+        "403":
+          description: El usuario no tiene permisos para acceder a este recurso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoAuthError"
+  /prestamos:
+    get:
+      summary: Listado de Prestamos en la aplicación
+      operationId: listarPrestamos
+      tags:
+      - prestamos
+      responses:
+        "200":
+          description: Listado completo de Prestamos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PrestamoSummary"
+        "401":
+          description: El usuario no está autenticado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoAuthError"
+        "403":
+          description: El usuario no tiene permisos para acceder a este recurso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoAuthError"
+    post:
+      summary: Crear Prestamo
+      operationId: crearPrestamo
+      tags:
+      - prestamos
+      requestBody:
+        description: Crear una nueva Prestamo en la Aplicación
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrestamoCreate"
+      responses:
+        "201":
+          description: Consejería creada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrestamoDetail"
+        "400":
+          description: La información ofrecida es incorrecta
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorObject"
+        "401":
+          description: El usuario no está autenticado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoAuthError"
+        "403":
+          description: El usuario no tiene permisos para acceder a este recurso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoAuthError"
 components:
   securitySchemes:
     JWT:
@@ -112,43 +262,142 @@ components:
           example:
             nombre: "No puede ser nulo"
             descripcion: "Longitud debe estar entre 1 y 2048"
-    ConsejeriasListResponse:
+    SociosListResponse:
       type: object
       properties:
         data:
           type: array
           items:
-            $ref: "#/components/schemas/ConsejeriaSummary"
-    ConsejeriaSummary:
+            $ref: "#/components/schemas/SocioSummary"
+    SocioDetailResponse:
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/SocioDetail"
+    SocioSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        perfil:
+          type: string
+    SocioDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        perfil:
+          type: string
+    SocioCreate:
+      type: object
+      required:
+        - nombre
+        - perfil
+      properties:
+        nombre:
+          type: string
+        perfil:
+          type: string
+    LibrosListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/LibroSummary"
+    LibroDetailResponse:
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/LibroDetail"
+    LibroSummary:
       type: object
       required:
         - id
-        - dir3
         - nombre
       properties:
         id:
           type: integer
           format: int64
-        dir3:
-          type: string
         nombre:
           type: string
-    ConsejeriaCreate:
+    LibroDetail:
+      type: object
+      required:
+        - id
+        - nombre
+      properties:
+        id:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+    LibroCreate:
       type: object
       required:
         - nombre
-        - dir3
       properties:
-        dir3:
-          type: string
-          minLength: 1
         nombre:
           type: string
           minLength: 1
           maxLength: 60
-    ConsejeriaSummaryResponse:
+    PrestamosListResponse:
       type: object
       properties:
         data:
-          $ref: "#/components/schemas/ConsejeriaSummary"
-    
+          type: array
+          items:
+            $ref: "#/components/schemas/PrestamoSummary"
+    PrestamoDetailResponse:
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/PrestamoDetail"
+    PrestamoSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        socio:
+          $ref: "#/components/schemas/SocioDetail"
+        libro:
+          $ref: "#/components/schemas/LibroDetail"
+        expiraEn:
+          type: date
+        devueltoEn:
+          type: date
+    PrestamoDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        socio:
+          $ref: "#/components/schemas/SocioDetail"
+        libro:
+          $ref: "#/components/schemas/LibroDetail"
+        expiraEn:
+          type: date
+        devueltoEn:
+          type: date
+    PrestamoCreate:
+      type: object
+      required:
+        - socio_id
+        - libro_id
+      properties:
+        socio_id:
+          type: integer
+          format: int64
+        libro_id:
+          type: integer
+          format: int64
+          
+
