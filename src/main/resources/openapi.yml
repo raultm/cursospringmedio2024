@@ -202,6 +202,33 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/NoAuthError"
+  /prestamos/{id}:
+    delete:
+      summary: Finalizar Préstamo
+      operationId: devolverPrestamo
+      tags:
+      - prestamos
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: El ID del préstamo a marcar como devuelto
+      responses:
+        "200":
+          description: Préstamo marcado como devuelto correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrestamoDetail"
+        "404":
+          description: Préstamo no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorObject"
 components:
   securitySchemes:
     JWT:
