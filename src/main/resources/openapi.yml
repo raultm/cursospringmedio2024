@@ -326,10 +326,16 @@ components:
       required:
         - nombre
         - perfil
+        - fecha_nacimiento
+        - email
       properties:
         nombre:
           type: string
         perfil:
+          type: string
+        fecha_nacimiento:
+          type: string
+        email:
           type: string
     LibrosListResponse:
       type: object
