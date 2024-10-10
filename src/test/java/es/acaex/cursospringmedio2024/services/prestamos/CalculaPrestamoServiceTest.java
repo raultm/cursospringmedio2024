@@ -16,24 +16,6 @@ import es.acaex.cursospringmedio2024.models.Socio;
 import static org.mockito.Mockito.when;
 
 import java.time.*;
-        // if(socio.tienePrestamoVencido()){
-        //     throw new PrestamoNoGestionableException("El Socio tiene un préstamo retrasado");
-        // }
-
-        // if(libro.estaEnPrestamo()){
-        //     throw new PrestamoNoGestionableException("El Libro está prestado");
-        // }
-
-        // if(!socio.haSuperadoElLimiteDePrestamo()){
-        //     prestamoDias = 7;
-        //     if(socio.getPerfil().toLowerCase() == "estudiante"){
-        //         prestamoDias = 15;
-        //     }else if (socio.getPerfil().toLowerCase() == "profesor"){
-        //         prestamoDias = 30;
-        //     }
-        // }else{
-        //     throw new PrestamoNoGestionableException("El Socio ha superado el límite de libros prestados");
-        // }
 public class CalculaPrestamoServiceTest {
     
     CalculaPrestamoService calculaPrestamoService;
@@ -53,37 +35,37 @@ public class CalculaPrestamoServiceTest {
 
     @Test
     void unVisitanteTiene7DiasDePrestamo(){
-        fechaDePrestamo = LocalDate.parse("2024-09-01");
+        fechaDePrestamo = LocalDate.parse("2024-09-02");
         when(socio.getPerfil()).thenReturn("visitante");
 
         Prestamo prestamo = calculaPrestamoService.execute(socio, libro, fechaDePrestamo);
 
-        assertThat(prestamo.getExpiraEn().toString(), is("2024-09-08"));
+        assertThat(prestamo.getExpiraEn().toString(), is("2024-09-09"));
     }
 
     @Test
     void unEstudianteTiene15DiasDePrestamo(){
-        fechaDePrestamo = LocalDate.parse("2024-09-01");
+        fechaDePrestamo = LocalDate.parse("2024-09-02");
         when(socio.getPerfil()).thenReturn("estudiante");
 
         Prestamo prestamo = calculaPrestamoService.execute(socio, libro, fechaDePrestamo);
 
-        assertThat(prestamo.getExpiraEn().toString(), is("2024-09-16"));
+        assertThat(prestamo.getExpiraEn().toString(), is("2024-09-17"));
     }
 
     @Test
     void unProfesorTiene30DiasDePrestamo(){
-        fechaDePrestamo = LocalDate.parse("2024-09-01");
+        fechaDePrestamo = LocalDate.parse("2024-09-02");
         when(socio.getPerfil()).thenReturn("profesor");
 
         Prestamo prestamo = calculaPrestamoService.execute(socio, libro, fechaDePrestamo);
 
-        assertThat(prestamo.getExpiraEn().toString(), is("2024-10-01"));
+        assertThat(prestamo.getExpiraEn().toString(), is("2024-10-02"));
     }
 
     @Test
     void noSePuedePrestarSiElSocioHaSuperadoElLimiteDePrestamos(){
-        fechaDePrestamo = LocalDate.parse("2024-09-01");
+        fechaDePrestamo = LocalDate.parse("2024-09-02");
         when(socio.haSuperadoElLimiteDePrestamo()).thenReturn(true);
 
         Exception ex = assertThrows(PrestamoNoGestionableException.class, () -> {
@@ -95,7 +77,7 @@ public class CalculaPrestamoServiceTest {
 
     @Test
     void noSePuedePrestarSiElSocioTieneUnPrestamoRetrasado(){
-        fechaDePrestamo = LocalDate.parse("2024-09-01");
+        fechaDePrestamo = LocalDate.parse("2024-09-02");
         when(socio.tienePrestamoVencido()).thenReturn(true);
 
         Exception ex = assertThrows(PrestamoNoGestionableException.class, () -> {
@@ -107,7 +89,7 @@ public class CalculaPrestamoServiceTest {
 
     @Test
     void noSePuedePrestarSiElLibroYaEstaEnUnPrestamoActivo(){
-        fechaDePrestamo = LocalDate.parse("2024-09-01");
+        fechaDePrestamo = LocalDate.parse("2024-09-02");
         when(libro.estaEnPrestamo()).thenReturn(true);
 
         Exception ex = assertThrows(PrestamoNoGestionableException.class, () -> {
