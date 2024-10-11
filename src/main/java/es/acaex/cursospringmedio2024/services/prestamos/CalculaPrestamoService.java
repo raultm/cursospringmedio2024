@@ -43,14 +43,14 @@ public class CalculaPrestamoService {
             switch (perfil) {
                 case "visitante":
                     prestamoDias = 7;
-                    if (day.name() == "SUNDAY" || day.name() == "SUNDAY"){
+                    if (day.name() == "SATURDAY" || day.name() == "SUNDAY"){
                         diaCorrecto = false;
                         mensaje = "Los visitantes no pueden alquilar en fin de semana";
                     }
                     break;
                 case "alumno":
                     prestamoDias = 15;
-                    if (day.name() == "SUNDAY" || day.name() == "SUNDAY") {
+                    if (day.name() == "SATURDAY" || day.name() == "SUNDAY") {
                         diaCorrecto = false;
                         mensaje = "Los estudiantes no pueden alquilar en fin de semana";
                     }

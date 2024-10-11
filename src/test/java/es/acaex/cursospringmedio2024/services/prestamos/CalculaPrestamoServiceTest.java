@@ -46,7 +46,7 @@ public class CalculaPrestamoServiceTest {
     @Test
     void unEstudianteTiene15DiasDePrestamo(){
         fechaDePrestamo = LocalDate.parse("2024-09-02");
-        when(socio.getPerfil()).thenReturn("estudiante");
+        when(socio.getPerfil()).thenReturn("alumno");
 
         Prestamo prestamo = calculaPrestamoService.execute(socio, libro, fechaDePrestamo);
 
