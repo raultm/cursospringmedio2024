@@ -26,6 +26,7 @@ public class CalculaPrestamoServiceTest {
     Libro libro;
 
     LocalDate fechaDePrestamo;
+    LocalTime horaPrestamo = LocalTime.parse("10:00");
 
     @BeforeEach
     public void init() {
@@ -97,5 +98,106 @@ public class CalculaPrestamoServiceTest {
         }); 
 
         assertThat(ex.getMessage(), containsString("prestado"));
+    }
+
+    @Test
+    void unVisitanteNoPuedeRealizarUnPrestamoEnDomingo(){
+        fechaDePrestamo = LocalDate.parse("2024-09-01");
+        when(socio.getPerfil()).thenReturn("visitante");
+        
+        Exception ex = assertThrows(PrestamoNoGestionableException.class, () -> {
+            calculaPrestamoService.execute(socio, libro, fechaDePrestamo);
+        }); 
+
+        assertThat(ex.getMessage(), containsString("fin de semana"));
+    }
+
+    @Test
+    void unEstudianteNoPuedeRealizarUnPrestamoEnSabado(){
+        fechaDePrestamo = LocalDate.parse("2024-08-31");
+        when(socio.getPerfil()).thenReturn("estudiante");
+        
+        Exception ex = assertThrows(PrestamoNoGestionableException.class, () -> {
+            calculaPrestamoService.execute(socio, libro, fechaDePrestamo);
+        }); 
+
+        assertThat(ex.getMessage(), containsString("fin de semana"));
+    }
+    
+    @Test
+    void unProfesorPuedeRealizarUnPrestamoEnDomingo(){
+        fechaDePrestamo = LocalDate.parse("2024-09-01");
+        when(socio.getPerfil()).thenReturn("profesor");
+        
+        Prestamo prestamo = calculaPrestamoService.execute(socio, libro, fechaDePrestamo);
+
+        assertThat(prestamo.getExpiraEn().toString(), is("2024-10-01"));
+    }
+
+    @Test
+    void unProfesorEnHorarioNoHabitualPrestamode15Dias(){
+        fechaDePrestamo = LocalDate.parse("2024-09-02");
+        horaPrestamo = LocalTime.of(8,59);
+        when(socio.getPerfil()).thenReturn("profesor");
+        
+        Prestamo prestamo = calculaPrestamoService.execute(socio, libro, fechaDePrestamo, horaPrestamo);
+
+        assertThat(prestamo.getExpiraEn().toString(), is("2024-09-17"));
+    }
+
+    @Test
+    void unEstudianteEnHorarioNoHabitualPrestamode7Dias(){
+        fechaDePrestamo = LocalDate.parse("2024-09-02");
+        horaPrestamo = LocalTime.of(8,59);
+        when(socio.getPerfil()).thenReturn("estudiante");
+        
+        Prestamo prestamo = calculaPrestamoService.execute(socio, libro, fechaDePrestamo, horaPrestamo);
+
+        assertThat(prestamo.getExpiraEn().toString(), is("2024-09-09"));
+    }
+
+    @Test
+    void unVisitanteEnHorarioNoHabitualPrestamode3Dias(){
+        fechaDePrestamo = LocalDate.parse("2024-09-02");
+        horaPrestamo = LocalTime.of(8,59);
+        when(socio.getPerfil()).thenReturn("visitante");
+        
+        Prestamo prestamo = calculaPrestamoService.execute(socio, libro, fechaDePrestamo, horaPrestamo);
+
+        assertThat(prestamo.getExpiraEn().toString(), is("2024-09-05"));
+    }
+
+    @Test
+    void unProfesorEnVacacionesPuedeSacarPrestamoPor60Dias(){
+        fechaDePrestamo = LocalDate.parse("2024-08-15");
+        when(socio.getPerfil()).thenReturn("profesor");
+        
+        Prestamo prestamo = calculaPrestamoService.execute(socio, libro, fechaDePrestamo, horaPrestamo);
+
+        assertThat(prestamo.getExpiraEn().toString(), is("2024-10-14"));
+    }
+
+    @Test
+    void unEstudianteNoPuedeRealizarUnPrestamoEnVacaciones(){
+        fechaDePrestamo = LocalDate.parse("2024-08-15");
+        when(socio.getPerfil()).thenReturn("estudiante");
+        
+        Exception ex = assertThrows(PrestamoNoGestionableException.class, () -> {
+            calculaPrestamoService.execute(socio, libro, fechaDePrestamo);
+        }); 
+
+        assertThat(ex.getMessage(), containsString("vacaciones"));
+    }
+
+    @Test
+    void unVisitanteNoPuedeRealizarUnPrestamoEnVacaciones(){
+        fechaDePrestamo = LocalDate.parse("2024-08-15");
+        when(socio.getPerfil()).thenReturn("visitante");
+        
+        Exception ex = assertThrows(PrestamoNoGestionableException.class, () -> {
+            calculaPrestamoService.execute(socio, libro, fechaDePrestamo);
+        }); 
+
+        assertThat(ex.getMessage(), containsString("vacaciones"));
     }
 }
