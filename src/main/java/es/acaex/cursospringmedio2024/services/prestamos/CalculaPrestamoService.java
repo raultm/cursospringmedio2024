@@ -52,7 +52,7 @@ public class CalculaPrestamoService {
                     prestamoDias = 15;
                     if (day.name() == "SATURDAY" || day.name() == "SUNDAY") {
                         diaCorrecto = false;
-                        mensaje = "Los estudiantes no pueden alquilar en fin de semana";
+                        mensaje = "Los alumnos no pueden alquilar en fin de semana";
                     }
                     break;
                 case "profesor":
