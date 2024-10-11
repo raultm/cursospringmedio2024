@@ -16,8 +16,9 @@ import es.acaex.cursospringmedio2024.models.Socio;
 import static org.mockito.Mockito.when;
 
 import java.time.*;
+
 public class CalculaPrestamoServiceTest {
-    
+
     CalculaPrestamoService calculaPrestamoService;
 
     @Mock
@@ -35,7 +36,7 @@ public class CalculaPrestamoServiceTest {
     }
 
     @Test
-    void unVisitanteTiene7DiasDePrestamo(){
+    void unVisitanteTiene7DiasDePrestamo() {
         fechaDePrestamo = LocalDate.parse("2024-09-02");
         when(socio.getPerfil()).thenReturn("visitante");
 
@@ -45,7 +46,7 @@ public class CalculaPrestamoServiceTest {
     }
 
     @Test
-    void unEstudianteTiene15DiasDePrestamo(){
+    void unEstudianteTiene15DiasDePrestamo() {
         fechaDePrestamo = LocalDate.parse("2024-09-02");
         when(socio.getPerfil()).thenReturn("estudiante");
 
@@ -55,7 +56,7 @@ public class CalculaPrestamoServiceTest {
     }
 
     @Test
-    void unProfesorTiene30DiasDePrestamo(){
+    void unProfesorTiene30DiasDePrestamo() {
         fechaDePrestamo = LocalDate.parse("2024-09-02");
         when(socio.getPerfil()).thenReturn("profesor");
 
@@ -65,37 +66,37 @@ public class CalculaPrestamoServiceTest {
     }
 
     @Test
-    void noSePuedePrestarSiElSocioHaSuperadoElLimiteDePrestamos(){
+    void noSePuedePrestarSiElSocioHaSuperadoElLimiteDePrestamos() {
         fechaDePrestamo = LocalDate.parse("2024-09-02");
         when(socio.haSuperadoElLimiteDePrestamo()).thenReturn(true);
 
         Exception ex = assertThrows(PrestamoNoGestionableException.class, () -> {
             calculaPrestamoService.execute(socio, libro, fechaDePrestamo);
-        }); 
+        });
 
         assertThat(ex.getMessage(), containsString("prestados"));
     }
 
     @Test
-    void noSePuedePrestarSiElSocioTieneUnPrestamoRetrasado(){
+    void noSePuedePrestarSiElSocioTieneUnPrestamoRetrasado() {
         fechaDePrestamo = LocalDate.parse("2024-09-02");
         when(socio.tienePrestamoVencido()).thenReturn(true);
 
         Exception ex = assertThrows(PrestamoNoGestionableException.class, () -> {
             calculaPrestamoService.execute(socio, libro, fechaDePrestamo);
-        }); 
+        });
 
         assertThat(ex.getMessage(), containsString("retrasado"));
     }
 
     @Test
-    void noSePuedePrestarSiElLibroYaEstaEnUnPrestamoActivo(){
+    void noSePuedePrestarSiElLibroYaEstaEnUnPrestamoActivo() {
         fechaDePrestamo = LocalDate.parse("2024-09-02");
         when(libro.estaEnPrestamo()).thenReturn(true);
 
         Exception ex = assertThrows(PrestamoNoGestionableException.class, () -> {
             calculaPrestamoService.execute(socio, libro, fechaDePrestamo);
-        }); 
+        });
 
         assertThat(ex.getMessage(), containsString("prestado"));
     }
